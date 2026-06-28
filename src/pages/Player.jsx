@@ -8,7 +8,10 @@ import PlayerStats from "../components/player/PlayerStats";
 import ClanCard from "../components/player/ClanCard";
 import HeroSection from "../components/player/HeroSection";
 
+import PageContainer from "../components/ui/PageContainer";
+
 import { getPlayer } from "../api/cocApi";
+import { motion } from "framer-motion";
 
 export default function Player() {
   const { tag } = useParams();
@@ -33,13 +36,31 @@ export default function Player() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 text-white">
-      <PlayerHeader player={player} />
+      <PageContainer>
+        <motion.div
+          initial={{
+              opacity:0,
+              y:20
+          }}
+          animate={{
+              opacity:1,
+              y:0
+          }}
+          transition={{
+              duration:0.5
+          }}
+        >
 
-      <PlayerStats player={player} />
+            <PlayerHeader player={player} />
 
-      <ClanCard player={player} />
+            <PlayerStats player={player} />
 
-      <HeroSection player={player} />
+            <ClanCard player={player} />
+
+            <HeroSection player={player} />
+
+        </motion.div>
+      </PageContainer>
     </div>
   );
 }

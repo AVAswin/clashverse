@@ -1,15 +1,62 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { getClan } from "../api/cocApi";
+
+import Loader from "../components/common/Loader";
+
+import PageContainer from "../components/ui/PageContainer";
+import ClanHeader from "../components/clan/ClanHeader";
+import ClanStats from "../components/clan/ClanStats";
+import MemberList from "../components/clan/MemberList";
+
 export default function Clan() {
-  const { tag } = useParams();
 
-  return (
-    <div className="mt-20 text-center">
-      <h1 className="text-4xl font-bold">Clan Page</h1>
+    const { tag } = useParams();
 
-      <p className="mt-6 text-xl text-yellow-400">
-        Tag: {tag}
-      </p>
-    </div>
-  );
+    const [clan, setClan] = useState(null);
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+
+        async function fetchClan() {
+
+            try {
+
+                const data = await getClan(tag);
+
+                setClan(data);
+
+            }
+
+            finally {
+
+                setLoading(false);
+
+            }
+
+        }
+
+        fetchClan();
+
+    }, [tag]);
+
+    if (loading)
+        return <Loader />;
+
+    return (
+
+        <PageContainer>
+
+          <ClanHeader clan={clan} />
+
+          <ClanStats clan={clan} />
+
+          <MemberList clan={clan} />
+
+      </PageContainer>
+
+    );
+
 }

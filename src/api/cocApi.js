@@ -1,10 +1,25 @@
-import axios from "axios";
+import { mockClan, mockPlayer } from "./mockData";
 
-const api = axios.create({
-  baseURL: "http://localhost:5000/api",
-});
+const DEMO_MODE = true;
 
-export const getPlayer = async (tag) => {
-  const response = await api.get(`/player/${tag}`);
-  return response.data;
-};
+export async function getPlayer(tag) {
+  if (DEMO_MODE) {
+    return Promise.resolve({
+      ...mockPlayer,
+      tag: `#${tag}`,
+    });
+  }
+
+  // Real API code here later
+}
+
+export async function getClan(tag) {
+  if (DEMO_MODE) {
+    return Promise.resolve({
+      ...mockClan,
+      tag: `#${tag}`,
+    });
+  }
+
+  // Real API code here later
+}

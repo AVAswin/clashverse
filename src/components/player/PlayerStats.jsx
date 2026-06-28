@@ -1,51 +1,104 @@
-import { Trophy, Star, Castle, Heart } from "lucide-react";
+import {
+  Trophy,
+  Star,
+  Heart,
+  Castle,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  fadeUp,
+  staggerContainer,
+} from "../../utils/animations";
 
 const stats = [
   {
     title: "Trophies",
-    value: (player) => player.trophies,
+    value: (p) => p.trophies,
     icon: Trophy,
+    color: "text-yellow-400",
   },
   {
     title: "War Stars",
-    value: (player) => player.warStars,
+    value: (p) => p.warStars,
     icon: Star,
+    color: "text-orange-400",
   },
   {
     title: "Town Hall",
-    value: (player) => `TH ${player.townHallLevel}`,
+    value: (p) => `TH ${p.townHallLevel}`,
     icon: Castle,
+    color: "text-green-400",
   },
   {
     title: "Experience",
-    value: (player) => player.expLevel,
+    value: (p) => p.expLevel,
     icon: Heart,
+    color: "text-pink-400",
   },
 ];
 
 export default function PlayerStats({ player }) {
   return (
-    <section className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <motion.section
+    variants={staggerContainer}
+    initial="hidden"
+    animate="visible" 
+    className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
       {stats.map((stat) => {
         const Icon = stat.icon;
 
         return (
-          <div
+          <motion.div
+            variants={fadeUp}
             key={stat.title}
-            className="rounded-3xl border border-slate-800 bg-slate-900 p-6"
+            className="
+              relative
+              overflow-hidden
+              rounded-3xl
+              border
+              border-white/10
+              bg-gradient-to-br
+              from-slate-900
+              to-slate-950
+              p-7
+              shadow-xl
+            "
           >
-            <Icon size={28} className="text-yellow-400" />
+            <div
+                className="
+                absolute
+                -top-10
+                -right-10
+                h-28
+                w-28
+                rounded-full
+                bg-yellow-400/10
+                blur-[70px]
+              "
+              />
+            <div className="relative">
 
-            <p className="mt-5 text-sm text-slate-400">
-              {stat.title}
-            </p>
+                <Icon
+                    size={32}
+                    className={stat.color}
+                />
 
-            <h2 className="mt-2 text-3xl font-bold">
-              {stat.value(player)}
-            </h2>
-          </div>
+                <h2 className="mt-5 text-5xl font-black">
+
+                    {stat.value(player)}
+
+                </h2>
+
+                <p className="mt-2 text-slate-400">
+
+                    {stat.title}
+
+                </p>
+
+            </div>
+          </motion.div>
         );
       })}
-    </section>
+    </motion.section>
   );
 }
